@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fund Selector — The Moon Investments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    /* ─── Variables ─────────────────────────────────────────── */
+    :root {
+      --navy-900: #070f1f;
+      --navy-800: #0b1628;
+      --navy-700: #0f2040;
+      --navy-600: #163057;
+      --navy-400: #2a4a7a;
+      --navy-200: #4d6ea8;
+      --gold-500: #c9a84c;
+      --gold-400: #d9bc72;
+      --gold-300: #e8d099;
+      --gold-100: #faf5e8;
+      --white:    #ffffff;
+      --gray-50:  #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-600: #475569;
+      --gray-800: #1e293b;
+      --green:    #22c55e;
+      --amber:    #f59e0b;
+      --red:      #ef4444;
+      --radius:   12px;
+      --shadow:   0 4px 24px rgba(7,15,31,.12);
+      --shadow-lg:0 8px 40px rgba(7,15,31,.18);
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-800);
+      min-height: 100vh;
+    }
+
+    /* ─── Header ─────────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
+      padding: 0 2rem;
+      border-bottom: 1px solid rgba(201,168,76,.25);
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: radial-gradient(circle at 35% 35%, var(--gold-400), var(--gold-500));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 0 16px rgba(201,168,76,.4);
+    }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: .3px;
+      line-height: 1.2;
+    }
+    .logo-tagline {
+      font-size: .68rem;
+      font-weight: 400;
+      color: var(--gold-400);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .header-badge {
+      background: rgba(201,168,76,.12);
+      border: 1px solid rgba(201,168,76,.3);
+      color: var(--gold-400);
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+
+    /* ─── Main Layout ────────────────────────────────────────── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--navy-800);
+      margin-bottom: .25rem;
+    }
+    .section-sub {
+      font-size: .85rem;
+      color: var(--gray-600);
+      margin-bottom: 1.75rem;
+    }
+
+    /* ─── Form Card ─────────────────────────────────────────── */
+    .form-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--gray-200);
+      padding: 2rem 2.25rem;
+      margin-bottom: 2rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem 1.5rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group.half { grid-column: span 2; }
+
+    label {
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--navy-600);
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    input[type="text"],
+    input[type="number"],
+    select {
+      height: 42px;
+      padding: 0 12px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: .9rem;
+      font-family: inherit;
+      color: var(--gray-800);
+      background: var(--white);
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+      border-color: var(--gold-500);
+      box-shadow: 0 0 0 3px rgba(201,168,76,.15);
+    }
+    input[type="number"] { -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    /* Radio groups */
+    .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .radio-option { display: none; }
+    .radio-label {
+      padding: 8px 14px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 20px;
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all .18s;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .radio-option:checked + .radio-label {
+      border-color: var(--gold-500);
+      background: var(--gold-100);
+      color: var(--navy-700);
+    }
+    .radio-label:hover { border-color: var(--gold-400); }
+
+    /* Divider */
+    .form-divider {
+      grid-column: 1 / -1;
+      height: 1px;
+      background: var(--gray-100);
+      margin: .25rem 0;
+    }
+
+    /* CTA Button */
+    .btn-analyze {
+      margin-top: 1.75rem;
+      width: 100%;
+      height: 50px;
+      background: linear-gradient(135deg, var(--navy-700) 0%, var(--navy-800) 100%);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: .95rem;
+      font-weight: 600;
+      letter-spacing: .5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all .2s;
+      box-shadow: 0 4px 16px rgba(11,22,40,.25);
+    }
+    .btn-analyze:hover {
+      background: linear-gradient(135deg, var(--navy-600) 0%, var(--navy-700) 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(11,22,40,.3);
+    }
+    .btn-analyze:active { transform: translateY(0); }
+    .btn-icon { font-size: 1.1rem; }
+
+    /* ─── Results Section ────────────────────────────────────── */
+    #results { display: none; }
+    #results.visible { display: block; animation: fadeUp .4s ease; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Summary bar */
+    .summary-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1rem 1.75rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+      flex-wrap: wrap;
+    }
+    .summary-intro {
+      font-size: .9rem;
+      color: var(--gray-600);
+      flex: 1;
+      min-width: 180px;
+    }
+    .summary-intro strong { color: var(--navy-700); }
+    .summary-chips { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: .82rem;
+      font-weight: 600;
+    }
+    .chip.green { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .chip.amber { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    .chip.red   { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+    /* Fund cards grid */
+    .funds-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .fund-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--gray-200);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .fund-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .fund-card.card-green { border-top: 4px solid var(--green); }
+    .fund-card.card-amber { border-top: 4px solid var(--amber); }
+    .fund-card.card-red   { border-top: 4px solid var(--red); }
+
+    .card-header {
+      padding: 1.1rem 1.25rem .75rem;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .card-status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: .6rem;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+    }
+    .status-badge.green { background: #f0fdf4; color: #166534; }
+    .status-badge.amber { background: #fffbeb; color: #92400e; }
+    .status-badge.red   { background: #fef2f2; color: #991b1b; }
+
+    .card-fund-name {
+      font-family: 'Playfair Display', serif;
+      font-size: .98rem;
+      font-weight: 700;
+      color: var(--navy-800);
+      line-height: 1.3;
+      margin-bottom: .3rem;
+    }
+    .card-fund-type {
+      font-size: .73rem;
+      color: var(--gray-600);
+      font-weight: 400;
+    }
+
+    /* Key metrics row */
+    .card-metrics {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .metric {
+      flex: 1;
+      padding: .65rem .6rem;
+      text-align: center;
+      border-right: 1px solid var(--gray-100);
+    }
+    .metric:last-child { border-right: none; }
+    .metric-val {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--navy-700);
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .metric-val .sri-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold-500);
+      margin-right: 2px;
+      vertical-align: middle;
+    }
+    .metric-lbl {
+      font-size: .65rem;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    /* Reasons */
+    .card-body { padding: .85rem 1.25rem 1.1rem; flex: 1; }
+    .reasons-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .reason-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      font-size: .78rem;
+      line-height: 1.45;
+      color: var(--gray-600);
+    }
+    .reason-icon { flex-shrink: 0; margin-top: 1px; font-size: .85rem; }
+    .reason-item.ok    .reason-icon { color: var(--green); }
+    .reason-item.warn  .reason-icon { color: var(--amber); }
+    .reason-item.block .reason-icon { color: var(--red);   }
+    .reason-item.ok   { color: #166534; }
+    .reason-item.warn { color: #92400e; }
+    .reason-item.block{ color: #991b1b; }
+
+    /* ─── Validation error ───────────────────────────────────── */
+    .form-error {
+      display: none;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: .83rem;
+      margin-top: 1rem;
+    }
+    .form-error.visible { display: block; }
+
+    /* ─── PDF Export Button ──────────────────────────────────── */
+    .btn-pdf {
+      height: 40px;
+      padding: 0 18px;
+      background: linear-gradient(135deg, var(--gold-500) 0%, var(--gold-400) 100%);
+      color: var(--navy-900);
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: .83rem;
+      font-weight: 700;
+      letter-spacing: .4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all .2s;
+      box-shadow: 0 3px 12px rgba(201,168,76,.35);
+      white-space: nowrap;
+    }
+    .btn-pdf:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 16px rgba(201,168,76,.45);
+    }
+    .btn-pdf:active { transform: translateY(0); }
+
+    /* ─── Timestamp ──────────────────────────────────────────── */
+    .results-timestamp {
+      font-size: .75rem;
+      color: var(--gray-400);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────── */
+    footer {
+      background: var(--navy-900);
+      border-top: 1px solid rgba(201,168,76,.2);
+      padding: 1.1rem 2rem;
+      text-align: center;
+      font-size: .74rem;
+      color: rgba(255,255,255,.45);
+      letter-spacing: .3px;
+    }
+    footer strong { color: rgba(255,255,255,.65); }
+
+    /* ─── Print / PDF styles ─────────────────────────────────── */
+    @media print {
+      header, .form-card, .btn-pdf, .btn-analyze, footer { display: none !important; }
+      body { background: white; }
+      .funds-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .fund-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+      #results { display: block !important; }
+      .pdf-header { display: flex !important; }
+    }
+    .pdf-header {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--gold-500);
+    }
+    .pdf-header-left img { height: 32px; }
+    .pdf-header-right { text-align: right; font-size: .75rem; color: var(--gray-600); }
+
+    /* ─── Tooltip ────────────────────────────────────────────── */
+    #ttbox {
+      position: fixed;
+      z-index: 9999;
+      max-width: 320px;
+      background: #0d1b2a;
+      color: #f1f5f9;
+      font-size: .78rem;
+      line-height: 1.55;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(201,168,76,.3);
+      box-shadow: 0 8px 28px rgba(0,0,0,.35);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
+    #ttbox.visible { opacity: 1; }
+    .tip-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px; height: 16px;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: help;
+      color: var(--gold-500);
+      font-size: .8rem;
+      font-weight: 700;
+      line-height: 1;
+      flex-shrink: 0;
+      vertical-align: middle;
+      margin-left: 3px;
+      transition: color .15s;
+    }
+    .tip-btn:hover { color: var(--gold-400); }
+    /* wrapper radio + icône ⓘ */
+    .rw {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* ─── ESG Checkbox ───────────────────────────────────────── */
+    .esg-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: .65rem .9rem;
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color .18s, background .18s;
+      width: fit-content;
+    }
+    .esg-row:has(#esgCheck:checked) {
+      border-color: var(--gold-500);
+      background: var(--gold-100);
+    }
+    .esg-row label {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      cursor: pointer;
+      font-size: .83rem;
+      font-weight: 500;
+      color: var(--gray-700, #374151);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    #esgCheck {
+      width: 16px; height: 16px;
+      accent-color: var(--gold-500);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ─── Simulator ──────────────────────────────────────────── */
+    .sim-section {
+      margin-top: 2.5rem;
+    }
+    .sim-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--gray-200);
+      padding: 1.75rem 2rem 2rem;
+    }
+    .sim-controls {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .sim-group { display: flex; flex-direction: column; gap: 6px; }
+    .sim-info {
+      margin-top: 1.25rem;
+      padding: .85rem 1.25rem;
+      background: var(--gold-100);
+      border: 1px solid var(--gold-300);
+      border-radius: 8px;
+      font-size: .8rem;
+      color: var(--navy-700);
+      display: none;
+    }
+    .sim-info.visible { display: block; }
+    .sim-legend {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .leg-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--gray-600);
+    }
+    .leg-item::before {
+      content: '';
+      display: inline-block;
+      width: 28px; height: 3px;
+      border-radius: 2px;
+    }
+    .leg-item.stress::before     { background: #ef4444; }
+    .leg-item.unfav::before      { background: #f97316; }
+    .leg-item.moderate::before   { background: #86efac; }
+    .leg-item.favourable::before { background: #16a34a; }
+    .chart-wrap {
+      position: relative;
+      height: 360px;
+      width: 100%;
+    }
+
+    /* ─── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .form-grid { grid-template-columns: repeat(2, 1fr); }
+      .funds-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 580px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .funds-grid { grid-template-columns: 1fr; }
+      .header-badge { display: none; }
+      main { padding: 1.5rem 1rem 3rem; }
+      .form-card { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────────── -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <img src="Logo_TMI_blanc.png" alt="The Moon Investments" style="height:40px;display:block;" />
+      <span class="logo-tagline">Fund Selector</span>
+    </a>
+    <span class="header-badge">Outil interne — usage réservé</span>
+  </div>
+</header>
+
+<!-- ── Main ────────────────────────────────────────────────────── -->
+<main>
+
+  <!-- ── Profil Client ──────────────────────────────────────── -->
+  <p class="section-title">Profil investisseur</p>
+  <p class="section-sub">Renseignez les caractéristiques du client pour analyser l'adéquation avec les fonds référencés.</p>
+
+  <div class="form-card">
+    <div class="form-grid">
+
+      <!-- Identité -->
+      <div class="form-group half">
+        <label for="clientName">Prénom / Nom</label>
+        <input type="text" id="clientName" placeholder="Ex : Marie Dupont" />
+      </div>
+      <div class="form-group">
+        <label for="statut">Statut investisseur</label>
+        <select id="statut">
+          <option value="">— Sélectionner —</option>
+          <option value="Retail">Retail (non professionnel)</option>
+          <option value="Averti">Averti</option>
+          <option value="Professionnel">Professionnel</option>
+        </select>
+      </div>
+
+      <div class="form-divider"></div>
+
+      <!-- Paramètres financiers -->
+      <div class="form-group">
+        <label for="horizon">Horizon d'investissement (années)</label>
+        <input type="number" id="horizon" placeholder="Ex : 10" min="1" max="30" />
+      </div>
+      <div class="form-group">
+        <label for="montant">Montant disponible (€)</label>
+        <input type="number" id="montant" placeholder="Ex : 150000" min="0" />
+      </div>
+      <div class="form-group">
+        <label>Capacité de perte</label>
+        <div class="radio-group">
+          <input class="radio-option" type="radio" name="perte" id="perte1" value="Faible" />
+          <label class="radio-label" for="perte1">Faible (25%)</label>
+          <input class="radio-option" type="radio" name="perte" id="perte2" value="Moyenne" />
+          <label class="radio-label" for="perte2">Moyenne (50%)</label>
+          <input class="radio-option" type="radio" name="perte" id="perte3" value="Totale" />
+          <label class="radio-label" for="perte3">Totale (100%)</label>
+        </div>
+      </div>
+
+      <div class="form-divider"></div>
+
+      <!-- Profil qualitatif -->
+      <div class="form-group">
+        <label>Expérience en produits non cotés</label>
+        <div class="radio-group">
+          <span class="rw">
+            <input class="radio-option" type="radio" name="exp" id="exp0" value="Aucune" />
+            <label class="radio-label" for="exp0">Aucune</label>
+            <button type="button" class="tip-btn" data-tip="L'investisseur n'a jamais souscrit à des produits d'investissement alternatifs non cotés (FCPR, FPCI, FPS, SCR…). Selon MIF2 (art. L.533-13 CMF & règl. délégué 2017/565), l'absence d'expérience est un facteur de vigilance renforcée : accompagnement professionnel recommandé.">ⓘ</button>
+          </span>
+          <span class="rw">
+            <input class="radio-option" type="radio" name="exp" id="exp1" value="Basique" />
+            <label class="radio-label" for="exp1">Basique</label>
+            <button type="button" class="tip-btn" data-tip="L'investisseur a une connaissance théorique des produits non cotés (capital-investissement, dette privée) mais une expérience pratique limitée. Correspond au niveau de connaissance minimal exigé pour accéder à certains FPS dès 30 000 € (art. L.214-154 CMF).">ⓘ</button>
+          </span>
+          <span class="rw">
+            <input class="radio-option" type="radio" name="exp" id="exp2" value="Informée" />
+            <label class="radio-label" for="exp2">Informée</label>
+            <button type="button" class="tip-btn" data-tip="L'investisseur a déjà souscrit à des produits non cotés (PE, dette privée, infrastructure…) et comprend leurs mécanismes : illiquidité, appels de fonds, J-curve, distribution différée. Satisfait aux conditions de connaissance de l'art. L.214-154 CMF pour l'accès dès 30 000 €.">ⓘ</button>
+          </span>
+          <span class="rw">
+            <input class="radio-option" type="radio" name="exp" id="exp3" value="Avancée" />
+            <label class="radio-label" for="exp3">Avancée</label>
+            <button type="button" class="tip-btn" data-tip="L'investisseur dispose d'une expérience approfondie en capital-investissement ou actifs alternatifs : multiples souscriptions, suivi actif de portefeuille, connaissance des structures FPCI/FPS/SLP. Profil correspondant à l'investisseur averti ou professionnel par nature (art. L.533-16 CMF).">ⓘ</button>
+          </span>
+        </div>
+      </div>
+      <div class="form-group half">
+        <label>Objectif d'investissement</label>
+        <div class="radio-group">
+          <span class="rw">
+            <input class="radio-option" type="radio" name="objectif" id="obj1" value="Revenus" />
+            <label class="radio-label" for="obj1">Revenus</label>
+            <button type="button" class="tip-btn" data-tip="L'investisseur recherche des distributions régulières (dividendes, coupons, revenus locatifs…). Adapté aux fonds de dette privée (direct lending) ou d'infrastructure distribuant des flux périodiques.">ⓘ</button>
+          </span>
+          <span class="rw">
+            <input class="radio-option" type="radio" name="objectif" id="obj2" value="Capitalisation" />
+            <label class="radio-label" for="obj2">Capitalisation</label>
+            <button type="button" class="tip-btn" data-tip="L'investisseur vise la croissance du capital à long terme, sans attente de distribution pendant la durée de vie du fonds. Profil naturel pour le capital-investissement en equity (buyout, growth) ou les fonds de secondaire.">ⓘ</button>
+          </span>
+          <span class="rw">
+            <input class="radio-option" type="radio" name="objectif" id="obj3" value="Diversification" />
+            <label class="radio-label" for="obj3">Diversification</label>
+            <button type="button" class="tip-btn" data-tip="L'investisseur souhaite réduire la corrélation de son portefeuille global en ajoutant une poche non cotée décorrélée des marchés publics. Compatible avec tous les fonds référencés.">ⓘ</button>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-divider"></div>
+
+      <!-- ESG -->
+      <div class="form-group full">
+        <div class="esg-row">
+          <label for="esgCheck">
+            <input type="checkbox" id="esgCheck" />
+            <span>Intègre des critères ESG / investissement responsable</span>
+          </label>
+          <button type="button" class="tip-btn" data-tip="L'investisseur souhaite que ses placements intègrent des critères Environnementaux, Sociaux et de Gouvernance (ESG). Le règlement SFDR (UE 2019/2088) classe les fonds en Article 6 (pas d'intégration ESG formelle), Article 8 (promotion de caractéristiques ESG) ou Article 9 (objectif d'investissement durable). La classification SFDR de ces fonds n'est pas indiquée dans les DIC — vérifier la documentation complémentaire.">ⓘ</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-error" id="formError"></div>
+
+    <button class="btn-analyze" onclick="analyze()">
+      <span class="btn-icon">⚡</span> Analyser l'adéquation
+    </button>
+  </div>
+
+  <!-- ── Résultats ──────────────────────────────────────────── -->
+  <div id="results">
+
+    <!-- En-tête visible uniquement dans le PDF généré -->
+    <div class="pdf-header" id="pdfHeader">
+      <div class="pdf-header-left">
+        <img src="Logo_TMI_blanc.png" alt="The Moon Investments"
+             style="height:32px;filter:invert(1) sepia(1) saturate(0) brightness(.3);" />
+      </div>
+      <div class="pdf-header-right">
+        <div id="pdfClientLine" style="font-weight:700;color:#0f2040;font-size:.85rem;"></div>
+        <div id="pdfDateLine"></div>
+        <div style="margin-top:3px;color:#c9a84c;font-weight:600;letter-spacing:.5px;">ANALYSE D'ADÉQUATION — OUTIL INTERNE</div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.25rem;flex-wrap:wrap;gap:.75rem;">
+      <p class="section-title" style="margin-bottom:0;">Analyse d'adéquation</p>
+      <button class="btn-pdf" onclick="exportPDF()">⬇ Exporter en PDF</button>
+    </div>
+    <p class="section-sub" id="resultsSubtitle"></p>
+    <p class="results-timestamp" id="resultsTimestamp"></p>
+
+    <div class="summary-bar" id="summaryBar"></div>
+    <div class="funds-grid" id="fundsGrid"></div>
+  </div>
+
+  <!-- ── Simulateur de Cash Flow ────────────────────────────── -->
+  <div class="sim-section">
+    <p class="section-title">Simulateur de cash flow PRIIPs</p>
+    <p class="section-sub">Projetez la valeur de votre investissement selon les 4 scénarios réglementaires, calculés année par année à partir des rendements annuels moyens du DIC (Part F).</p>
+
+    <div class="sim-card">
+
+      <div class="sim-controls">
+        <div class="sim-group">
+          <label for="simFund">Fonds</label>
+          <select id="simFund" onchange="updateChart()"></select>
+        </div>
+        <div class="sim-group">
+          <label for="simAmount">Montant investi (€)</label>
+          <input type="number" id="simAmount" value="100000" min="1000" step="5000"
+                 oninput="updateChart()" />
+        </div>
+      </div>
+
+      <div class="sim-legend">
+        <span class="leg-item stress">Scénario de tension</span>
+        <span class="leg-item unfav">Scénario défavorable</span>
+        <span class="leg-item moderate">Scénario intermédiaire</span>
+        <span class="leg-item favourable">Scénario favorable</span>
+        <span class="leg-item" style="gap:10px;">
+          <span style="display:inline-block;width:22px;border-top:2px dashed #c9a84c;vertical-align:middle;"></span>
+          Durée recommandée
+        </span>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas id="cashflowChart"></canvas>
+      </div>
+
+      <div class="sim-info" id="simInfo"></div>
+
+    </div>
+  </div>
+
+</main>
+
+<div id="ttbox"></div>
+
+<!-- ── Footer ──────────────────────────────────────────────────── -->
+<footer>
+  <strong>Document généré par The Moon Investments</strong> — Outil d'aide à la sélection de fonds. Ne constitue pas une recommandation d'investissement au sens de la Directive 2014/65/EU (MiFID II).
+</footer>
+
+<script>
+/* ────────────────────────────────────────────────────────────────
+   GLOBALS
+──────────────────────────────────────────────────────────────── */
+let logoBase64  = '';
+let lastResults = null;
+let lastProfile = null;
+
+// Pré-charge le logo en base64 dès le chargement de la page
+(function preloadLogo() {
+  const img = new Image();
+  img.onload = function () {
+    const c = document.createElement('canvas');
+    c.width  = img.naturalWidth  || 200;
+    c.height = img.naturalHeight || 60;
+    try {
+      c.getContext('2d').drawImage(img, 0, 0);
+      logoBase64 = c.toDataURL('image/png');
+    } catch (e) { logoBase64 = ''; }
+  };
+  img.onerror = function () { logoBase64 = ''; };
+  img.src = 'Logo_TMI_blanc.png';
+}());
+
+/* ────────────────────────────────────────────────────────────────
+   DATA — fonds OPALE Capital (source : funds.json)
+──────────────────────────────────────────────────────────────── */
+const FUNDS = [
+  {
+    fund_name: "Opale Capital Keensight Nova VII",
+    sri: 6,
+    recommended_horizon_years: 10,
+    minimum_ticket_eur: 100000,
+    lock_up_years: "10 ans (prorogeable 2×1 an)",
+    fund_type: "FPCI",
+    fund_type_full: "FPCI — Capital-investissement PME tech & santé (Europe)",
+    investor_status_required: "Investisseur Averti (FPCI)",
+    fpci: true,
+    sfdr_article: null,
+    scenarios_priips: { stress: -1.8, unfavourable: -1.2, moderate: 4.3, favourable: 9.4 }
+  },
+  {
+    fund_name: "Opale Capital Strategies Co-Investment",
+    sri: 6,
+    recommended_horizon_years: 10,
+    minimum_ticket_eur: 100000,
+    minimum_ticket_f1r1: 500000,
+    lock_up_years: "10 ans (prorogeable 3×1 an)",
+    fund_type: "FPS",
+    fund_type_full: "FPS — Co-investissement PE (Europe & Amérique du Nord)",
+    investor_status_required: "Investisseur Averti (FPS)",
+    fpci: false,
+    sfdr_article: null,
+    scenarios_priips: { stress: -2.4, unfavourable: -1.8, moderate: 3.8, favourable: 8.8 }
+  },
+  {
+    fund_name: "Opale Capital Strategies Direct Lending I",
+    sri: 6,
+    recommended_horizon_years: 6,
+    minimum_ticket_eur: 100000,
+    lock_up_years: "6 ans (prorogeable 3×1 an)",
+    fund_type: "FPS",
+    fund_type_full: "FPS — Dette privée / Direct Lending (Europe & Amérique du Nord)",
+    investor_status_required: "Investisseur Averti (FPS)",
+    fpci: false,
+    sfdr_article: null,
+    scenarios_priips: { stress: -0.2, unfavourable: 0.0, moderate: 2.8, favourable: 7.2 }
+  },
+  {
+    fund_name: "Opale Capital Strategies Secondaries II",
+    sri: 6,
+    recommended_horizon_years: 10,
+    minimum_ticket_eur: 100000,
+    lock_up_years: "10 ans (prorogeable 4×1 an)",
+    fund_type: "FPS",
+    fund_type_full: "FPS — Secondaire Private Equity (mondial, focus Europe & Amérique du Nord)",
+    investor_status_required: "Investisseur Averti (FPS)",
+    fpci: false,
+    sfdr_article: null,
+    scenarios_priips: { stress: -0.6, unfavourable: 1.9, moderate: 4.5, favourable: 7.2 }
+  },
+  {
+    fund_name: "Opale Capital Strategies Tactical Credit II",
+    sri: 6,
+    recommended_horizon_years: 8,
+    minimum_ticket_eur: 100000,
+    lock_up_years: "8 ans (prorogeable 4×1 an)",
+    fund_type: "FPS",
+    fund_type_full: "FPS — Situations spéciales / Tactical Credit (Europe & Amérique du Nord)",
+    investor_status_required: "Investisseur Averti (FPS)",
+    fpci: false,
+    sfdr_article: null,
+    scenarios_priips: { stress: -1.1, unfavourable: -0.5, moderate: 3.4, favourable: 8.6 }
+  },
+  {
+    fund_name: "Tikehau Aéro Partenaires II Feeder",
+    sri: 6,
+    recommended_horizon_years: 10,
+    minimum_ticket_eur: 100000,
+    lock_up_years: "10 ans (prorogeable 2×1 an)",
+    fund_type: "FPS",
+    fund_type_full: "FPS (nourricier) — PE aérospatial & défense, 70% France",
+    investor_status_required: "Investisseur Averti (FPS)",
+    fpci: false,
+    sfdr_article: null,
+    scenarios_priips: { stress: -2.1, unfavourable: -1.4, moderate: 4.0, favourable: 9.0 }
+  }
+];
+
+/* ────────────────────────────────────────────────────────────────
+   HELPERS
+──────────────────────────────────────────────────────────────── */
+const fmt = n => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+
+function getVal(id) { return document.getElementById(id).value.trim(); }
+function getRadio(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : '';
+}
+
+/* ────────────────────────────────────────────────────────────────
+   MATCHING ENGINE
+──────────────────────────────────────────────────────────────── */
+function matchFund(fund, profile) {
+  // Each check returns { type: 'ok'|'warn'|'block', text: string }
+  const checks = [];
+
+  /* ── 1. Statut investisseur ─────────────────────────────── */
+  if (profile.statut === 'Professionnel' || profile.statut === 'Averti') {
+    checks.push({ type: 'ok', text: `Statut ${profile.statut} : accès direct autorisé` });
+  } else if (profile.statut === 'Retail') {
+    checks.push({
+      type: 'warn',
+      text: "Statut Retail : accès conditionné à l'intervention d'un PSI en gestion de portefeuille (art. L.533-13 CMF)"
+    });
+  }
+
+  /* ── 2. Ticket minimum ──────────────────────────────────── */
+  const minTicket = fund.minimum_ticket_eur;
+  const amt = profile.montant;
+  const expOk = profile.experience === 'Informée' || profile.experience === 'Avancée';
+
+  if (amt >= minTicket) {
+    checks.push({ type: 'ok', text: `Montant ${fmt(amt)} ≥ ticket minimum ${fmt(minTicket)}` });
+    // Warn about F1/R1 if Co-Investment
+    if (fund.minimum_ticket_f1r1 && amt < fund.minimum_ticket_f1r1) {
+      checks.push({ type: 'warn', text: `Parts F1/R1 requièrent ${fmt(fund.minimum_ticket_f1r1)} — éligible parts F2/R2 uniquement` });
+    }
+  } else if (amt >= 30000 && !fund.fpci && expOk) {
+    checks.push({
+      type: 'warn',
+      text: `Montant ${fmt(amt)} < ${fmt(minTicket)} — accès possible dès 30 000 € conditionné à l'expérience PE (art. L.214-154 CMF)`
+    });
+  } else if (amt >= 30000 && !fund.fpci && !expOk) {
+    checks.push({
+      type: 'block',
+      text: `Montant ${fmt(amt)} < ${fmt(minTicket)} — accès à 30 000 € réservé aux investisseurs avec expérience PE (Informée/Avancée requise)`
+    });
+  } else if (fund.fpci && amt < minTicket) {
+    checks.push({
+      type: 'block',
+      text: `Montant ${fmt(amt)} insuffisant — ticket minimum FPCI : ${fmt(minTicket)}`
+    });
+  } else {
+    checks.push({
+      type: 'block',
+      text: `Montant ${fmt(amt)} insuffisant — minimum absolu : 30 000 €`
+    });
+  }
+
+  /* ── 3. Horizon ─────────────────────────────────────────── */
+  const fh = fund.recommended_horizon_years;
+  const ph = profile.horizon;
+  if (ph >= fh) {
+    checks.push({ type: 'ok', text: `Horizon ${ph} an(s) ≥ durée recommandée (${fh} ans)` });
+  } else if (ph >= Math.ceil(fh * 0.75)) {
+    checks.push({
+      type: 'warn',
+      text: `Horizon ${ph} an(s) légèrement inférieur à la durée recommandée de ${fh} ans — blocage des fonds pendant toute la durée`
+    });
+  } else {
+    checks.push({
+      type: 'block',
+      text: `Horizon ${ph} an(s) incompatible avec la durée de blocage de ${fh} ans`
+    });
+  }
+
+  /* ── 4. Capacité de perte vs SRI ────────────────────────── */
+  if (profile.perte === 'Totale') {
+    checks.push({ type: 'ok', text: `Capacité de perte totale compatible avec SRI ${fund.sri}/7 (risque élevé, perte totale possible)` });
+  } else if (profile.perte === 'Moyenne') {
+    checks.push({
+      type: 'warn',
+      text: `SRI ${fund.sri}/7 implique un risque de perte totale en capital — capacité de perte moyenne (50%) potentiellement insuffisante`
+    });
+  } else {
+    checks.push({
+      type: 'block',
+      text: `Capacité de perte faible (25%) incompatible avec SRI ${fund.sri}/7 — produit à risque élevé sans protection du capital`
+    });
+  }
+
+  /* ── 5. Expérience en non coté ──────────────────────────── */
+  if (profile.experience === 'Avancée' || profile.experience === 'Informée') {
+    checks.push({ type: 'ok', text: `Expérience ${profile.experience} en produits non cotés : adéquate` });
+  } else if (profile.experience === 'Basique') {
+    checks.push({
+      type: 'warn',
+      text: 'Expérience basique en non coté — accompagnement par un conseiller recommandé avant souscription'
+    });
+  } else {
+    checks.push({
+      type: 'warn',
+      text: 'Aucune expérience en non coté — produit complexe, illiquide, nécessitant une connaissance du capital-investissement'
+    });
+  }
+
+  /* ── 6. ESG / SFDR ──────────────────────────────────────── */
+  if (profile.esg) {
+    if (!fund.sfdr_article || fund.sfdr_article === 6) {
+      checks.push({
+        type: 'warn',
+        text: 'Critères ESG requis — classification SFDR non confirmée dans les DIC : vérifier la documentation complémentaire du fonds'
+      });
+    } else if (fund.sfdr_article === 8 || fund.sfdr_article === 9) {
+      checks.push({
+        type: 'ok',
+        text: `Fonds Article ${fund.sfdr_article} SFDR — intègre des caractéristiques${fund.sfdr_article === 9 ? ' et un objectif' : ''} ESG`
+      });
+    }
+  }
+
+  /* ── Statut final ────────────────────────────────────────── */
+  const hasBlock = checks.some(c => c.type === 'block');
+  const hasWarn  = checks.some(c => c.type === 'warn');
+  const status   = hasBlock ? 'red' : hasWarn ? 'amber' : 'green';
+
+  return { status, checks };
+}
+
+/* ────────────────────────────────────────────────────────────────
+   RENDER
+──────────────────────────────────────────────────────────────── */
+function renderCard(fund, result) {
+  const statusConfig = {
+    green: { icon: '✅', label: 'Éligible',             cls: 'green' },
+    amber: { icon: '⚠️',  label: 'Éligible conditionnel', cls: 'amber' },
+    red:   { icon: '❌', label: 'Hors marché cible',    cls: 'red'   }
+  };
+  const s = statusConfig[result.status];
+
+  const reasons = result.checks.map(c => `
+    <li class="reason-item ${c.type === 'block' ? 'block' : c.type === 'warn' ? 'warn' : 'ok'}">
+      <span class="reason-icon">${c.type === 'block' ? '✗' : c.type === 'warn' ? '!' : '✓'}</span>
+      <span>${c.text}</span>
+    </li>
+  `).join('');
+
+  return `
+    <div class="fund-card card-${result.status}">
+      <div class="card-header">
+        <div class="card-status-row">
+          <span class="status-badge ${s.cls}">${s.icon} ${s.label}</span>
+          <span style="font-size:.7rem;color:var(--gray-400);font-weight:600;letter-spacing:.4px;text-transform:uppercase">${fund.fund_type}</span>
+        </div>
+        <div class="card-fund-name">${fund.fund_name}</div>
+        <div class="card-fund-type">${fund.fund_type_full}</div>
+      </div>
+      <div class="card-metrics">
+        <div class="metric">
+          <div class="metric-val"><span class="sri-dot"></span>${fund.sri}/7</div>
+          <div class="metric-lbl">SRI</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">${fund.recommended_horizon_years} ans</div>
+          <div class="metric-lbl">Horizon</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">${fmt(fund.minimum_ticket_eur)}</div>
+          <div class="metric-lbl">Ticket min.</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <ul class="reasons-list">${reasons}</ul>
+      </div>
+    </div>
+  `;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   MAIN ANALYZE
+──────────────────────────────────────────────────────────────── */
+function analyze() {
+  // Collect inputs
+  const profile = {
+    name:       getVal('clientName'),
+    horizon:    parseInt(getVal('horizon'), 10),
+    montant:    parseFloat(getVal('montant').replace(/\s/g, '')),
+    perte:      getRadio('perte'),
+    experience: getRadio('exp'),
+    objectif:   getRadio('objectif'),
+    statut:     getVal('statut'),
+    esg:        document.getElementById('esgCheck').checked
+  };
+
+  // Validation
+  const err = document.getElementById('formError');
+  const missing = [];
+  if (!profile.name)              missing.push('Prénom / Nom');
+  if (!profile.statut)            missing.push('Statut investisseur');
+  if (!profile.horizon || isNaN(profile.horizon) || profile.horizon < 1) missing.push('Horizon d\'investissement');
+  if (!profile.montant || isNaN(profile.montant) || profile.montant < 0) missing.push('Montant disponible');
+  if (!profile.perte)             missing.push('Capacité de perte');
+  if (!profile.experience)        missing.push('Expérience en non coté');
+  if (!profile.objectif)          missing.push('Objectif');
+
+  if (missing.length > 0) {
+    err.textContent = '⚠ Veuillez renseigner : ' + missing.join(', ');
+    err.classList.add('visible');
+    return;
+  }
+  err.classList.remove('visible');
+
+  // Run matching
+  const results = FUNDS.map(f => ({ fund: f, result: matchFund(f, profile) }));
+
+  const nGreen = results.filter(r => r.result.status === 'green').length;
+  const nAmber = results.filter(r => r.result.status === 'amber').length;
+  const nRed   = results.filter(r => r.result.status === 'red').length;
+
+  // Summary bar
+  document.getElementById('summaryBar').innerHTML = `
+    <div class="summary-intro">
+      Analyse pour <strong>${profile.name}</strong> —
+      ${profile.statut} · ${profile.horizon} ans · ${fmt(profile.montant)} · Perte ${profile.perte}
+    </div>
+    <div class="summary-chips">
+      <span class="chip green">✅ ${nGreen} éligible${nGreen > 1 ? 's' : ''}</span>
+      <span class="chip amber">⚠️ ${nAmber} conditionnel${nAmber > 1 ? 's' : ''}</span>
+      <span class="chip red">❌ ${nRed} exclu${nRed > 1 ? 's' : ''}</span>
+    </div>
+  `;
+
+  document.getElementById('resultsSubtitle').textContent =
+    `${FUNDS.length} fonds analysés — résultats classés par statut d'éligibilité.`;
+
+  // Sauvegarde pour l'export PDF
+  lastProfile = { ...profile };
+
+  // Sort: green → amber → red
+  const order = { green: 0, amber: 1, red: 2 };
+  results.sort((a, b) => order[a.result.status] - order[b.result.status]);
+  lastResults = results;
+
+  document.getElementById('fundsGrid').innerHTML =
+    results.map(r => renderCard(r.fund, r.result)).join('');
+
+  // Timestamp
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const timeStr = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  document.getElementById('resultsTimestamp').innerHTML =
+    `🕐 Rapport généré le <strong>${dateStr}</strong> à <strong>${timeStr}</strong>`;
+
+  // PDF header info
+  document.getElementById('pdfClientLine').textContent = `Client : ${profile.name}`;
+  document.getElementById('pdfDateLine').textContent = `${dateStr} — ${timeStr}`;
+
+  // Show & scroll
+  const section = document.getElementById('results');
+  section.classList.add('visible');
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ────────────────────────────────────────────────────────────────
+   PDF EXPORT — div DOM injectée hors-écran, capturée puis supprimée
+──────────────────────────────────────────────────────────────── */
+
+/* Construit le HTML d'une carte fonds pour le PDF */
+function buildPdfCard(fund, result) {
+  const isGreen     = result.status === 'green';
+  const borderColor = isGreen ? '#c9a84c' : '#f59e0b';
+  const statusLabel = isGreen ? '✓ Éligible' : '⚠ Éligible conditionnel';
+  const statusColor = isGreen ? '#166534'    : '#92400e';
+  const statusBg    = isGreen ? '#f0fdf4'    : '#fffbeb';
+  const fmtE = n => new Intl.NumberFormat('fr-FR',
+    { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(n);
+
+  const criteria = result.checks.map(c => {
+    const col  = c.type === 'ok' ? '#166534' : c.type === 'warn' ? '#92400e' : '#991b1b';
+    const icon = c.type === 'ok' ? '✓'       : c.type === 'warn' ? '⚠'       : '✗';
+    return `<div style="display:flex;gap:5px;margin-bottom:4px;font-size:8.5px;
+                        color:${col};line-height:1.45;">
+              <span style="flex-shrink:0;font-weight:700;">${icon}</span>
+              <span>${c.text}</span>
+            </div>`;
+  }).join('');
+
+  return `
+    <div style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid ${borderColor};
+                border-radius:4px;overflow:hidden;font-family:Arial,sans-serif;">
+      <div style="padding:9px 11px 7px;border-bottom:1px solid #f1f5f9;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+          <span style="padding:3px 8px;border-radius:10px;font-size:8.5px;font-weight:700;
+                       background:${statusBg};color:${statusColor};">${statusLabel}</span>
+          <span style="font-size:7.5px;color:#94a3b8;font-weight:600;text-transform:uppercase;
+                       letter-spacing:.4px;">${fund.fund_type}</span>
+        </div>
+        <div style="font-size:10.5px;font-weight:700;color:#0b1628;line-height:1.3;
+                    margin-bottom:3px;">${fund.fund_name}</div>
+        <div style="font-size:7.5px;color:#475569;">${fund.fund_type_full}</div>
+      </div>
+      <div style="display:flex;border-bottom:1px solid #f1f5f9;">
+        <div style="flex:1;padding:5px;text-align:center;border-right:1px solid #f1f5f9;">
+          <div style="font-size:11px;font-weight:700;color:#0f2040;">${fund.sri}/7</div>
+          <div style="font-size:6.5px;color:#94a3b8;text-transform:uppercase;letter-spacing:.4px;">SRI</div>
+        </div>
+        <div style="flex:1;padding:5px;text-align:center;border-right:1px solid #f1f5f9;">
+          <div style="font-size:11px;font-weight:700;color:#0f2040;">${fund.recommended_horizon_years} ans</div>
+          <div style="font-size:6.5px;color:#94a3b8;text-transform:uppercase;letter-spacing:.4px;">Horizon</div>
+        </div>
+        <div style="flex:1;padding:5px;text-align:center;">
+          <div style="font-size:9px;font-weight:700;color:#0f2040;">${fmtE(fund.minimum_ticket_eur)}</div>
+          <div style="font-size:6.5px;color:#94a3b8;text-transform:uppercase;letter-spacing:.4px;">Ticket min.</div>
+        </div>
+      </div>
+      <div style="padding:7px 11px 9px;">${criteria}</div>
+    </div>`;
+}
+
+function exportPDF() {
+  if (!lastResults || !lastProfile) {
+    alert('Veuillez d\'abord lancer une analyse.');
+    return;
+  }
+
+  // ── Nom du fichier ───────────────────────────────────────────
+  const safeName = lastProfile.name
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9 _\-]/g, '').replace(/\s+/g, '_') || 'client';
+  const now      = new Date();
+  const dStr     = now.toLocaleDateString('fr-FR').replace(/\//g, '-');
+  const filename = `Analyse_${safeName}_${dStr}.pdf`;
+
+  // ── Helpers ──────────────────────────────────────────────────
+  const nG = lastResults.filter(r => r.result.status === 'green').length;
+  const nA = lastResults.filter(r => r.result.status === 'amber').length;
+  const nR = lastResults.filter(r => r.result.status === 'red').length;
+  const fmtE = n => new Intl.NumberFormat('fr-FR',
+    { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(n);
+  const dateLabel = now.toLocaleDateString('fr-FR',
+    { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  const timeLabel = now.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+
+  // ── Logo ─────────────────────────────────────────────────────
+  const logoHTML = logoBase64
+    ? `<img src="${logoBase64}" style="height:40px;display:block;">`
+    : `<span style="font-size:16px;font-weight:700;color:#fff;font-family:Georgia,serif;">The Moon Investments</span>`;
+
+  // ── Fonds éligibles + conditionnels uniquement ───────────────
+  const pdfResults = lastResults.filter(r => r.result.status !== 'red');
+
+  // ── Grille 2 colonnes via TABLE ───────────────────────────────
+  const tableRows = [];
+  for (let i = 0; i < pdfResults.length; i += 2) {
+    const left  = buildPdfCard(pdfResults[i].fund,   pdfResults[i].result);
+    const right = pdfResults[i + 1]
+      ? buildPdfCard(pdfResults[i + 1].fund, pdfResults[i + 1].result)
+      : '';
+    tableRows.push(`<tr>
+      <td style="width:50%;vertical-align:top;padding:5px 5px 0 0;">${left}</td>
+      <td style="width:50%;vertical-align:top;padding:5px 0 0 5px;">${right}</td>
+    </tr>`);
+  }
+
+  // ── Message si aucun fonds éligible ──────────────────────────
+  const noFundsMsg = pdfResults.length === 0
+    ? `<div style="font-size:10px;color:#991b1b;padding:12px;background:#fef2f2;
+                   border-radius:6px;border:1px solid #fecaca;margin-bottom:14px;">
+         Aucun fonds éligible ou conditionnel pour ce profil.
+         Les ${nR} fonds analysés sont hors marché cible.
+       </div>`
+    : '';
+
+  // ── Construction du div PDF (DOM réel, hors-écran) ───────────
+  const pdfDiv = document.createElement('div');
+  pdfDiv.id = 'pdf-content';
+  // Hors-écran à 900px de large — correspond exactement à windowWidth de html2canvas
+  pdfDiv.style.cssText =
+    'position:absolute;left:-9999px;top:0;width:900px;' +
+    'background:#fff;font-family:Arial,Helvetica,sans-serif;color:#1e293b;';
+
+  pdfDiv.innerHTML = `
+    <!-- 1. HEADER MARINE -->
+    <div style="background:#0d1b2a;padding:16px 22px;display:flex;align-items:center;
+                justify-content:space-between;">
+      <div>${logoHTML}</div>
+      <div style="text-align:right;">
+        <div style="font-size:15px;font-weight:700;color:#fff;">${lastProfile.name}</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.6);margin-top:4px;">${dateLabel} à ${timeLabel}</div>
+        <div style="font-size:8px;font-weight:700;color:#c9a84c;letter-spacing:1px;
+                    text-transform:uppercase;margin-top:5px;">Analyse d'adéquation — Outil interne TMI</div>
+      </div>
+    </div>
+    <!-- Barre dorée séparatrice -->
+    <div style="height:3px;background:linear-gradient(90deg,#c9a84c,#e8d099);margin-bottom:16px;"></div>
+
+    <!-- 2. BANDEAU RÉSUMÉ PROFIL -->
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;
+                padding:10px 14px;margin:0 0 16px;">
+      <div style="font-size:10px;color:#475569;margin-bottom:7px;">
+        <b style="color:#0f2040;">${lastProfile.name}</b> —
+        ${lastProfile.statut} · ${lastProfile.horizon} an(s) · ${fmtE(lastProfile.montant)} ·
+        Perte ${lastProfile.perte} · Exp. ${lastProfile.experience} · ${lastProfile.objectif}
+      </div>
+      <div>
+        <span style="padding:3px 10px;border-radius:10px;font-size:9px;font-weight:700;
+                     background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;">✓ ${nG} éligible${nG>1?'s':''}</span>
+        &nbsp;
+        <span style="padding:3px 10px;border-radius:10px;font-size:9px;font-weight:700;
+                     background:#fffbeb;color:#92400e;border:1px solid #fde68a;">⚠ ${nA} conditionnel${nA>1?'s':''}</span>
+        &nbsp;
+        <span style="padding:3px 10px;border-radius:10px;font-size:9px;font-weight:700;
+                     background:#fef2f2;color:#991b1b;border:1px solid #fecaca;">✗ ${nR} exclu${nR>1?'s':''}</span>
+      </div>
+    </div>
+
+    <!-- 3. CARTES FONDS (éligibles et conditionnels uniquement) -->
+    ${noFundsMsg}
+    <table style="width:100%;border-collapse:collapse;">${tableRows.join('')}</table>
+
+    <!-- 4. BLOC MENTIONS DE RISQUE -->
+    <div style="margin-top:18px;padding:14px 16px 15px;background:#f8f8f8;
+                border-left:3px solid #ef4444;border-radius:0 6px 6px 0;">
+      <div style="font-size:10px;font-weight:700;color:#1e293b;letter-spacing:.5px;
+                  text-transform:uppercase;margin-bottom:10px;">Avertissement — Facteurs de risque</div>
+      <div style="font-size:8px;color:#334155;line-height:1.6;">
+        <p style="margin-bottom:6px;"><b>Risque de perte en capital :</b> Les fonds présentés sont des produits d'investissement alternatifs non garantis. L'investisseur peut perdre tout ou partie du capital investi. Les performances passées ne préjugent pas des performances futures.</p>
+        <p style="margin-bottom:6px;"><b>Risque de liquidité :</b> Ces fonds sont des véhicules fermés (FPCI/FPS). Aucun rachat n'est possible pendant la durée de vie du fonds. L'investisseur doit être en mesure d'immobiliser son capital pendant toute la durée indiquée, prorogations comprises.</p>
+        <p style="margin-bottom:6px;"><b>Risque de marché :</b> La valorisation des actifs sous-jacents (private equity, dette privée, immobilier) est exposée aux fluctuations économiques, aux variations de taux d'intérêt et aux conditions de marché.</p>
+        <p style="margin-bottom:6px;"><b>Risque de concentration :</b> Certains fonds peuvent présenter une concentration sectorielle ou géographique susceptible d'amplifier les pertes en cas de choc sur le secteur ou la zone concernés.</p>
+        <p style="margin-bottom:8px;"><b>Risque réglementaire :</b> La souscription à ces fonds est réservée aux investisseurs remplissant les conditions définies aux articles L.214-144 et L.214-154 du Code monétaire et financier. La présente analyse est un outil d'aide à la sélection produite par The Moon Investments agissant en qualité de Conseiller en Investissements Financiers (CIF). Elle ne constitue pas une recommandation personnalisée d'investissement au sens de l'article L.321-1 du CMF et ne saurait se substituer à un conseil individualisé tenant compte de la situation patrimoniale globale de l'investisseur.</p>
+        <p><b>Réglementation applicable :</b> Directive MIF2 (2014/65/UE) — Règlement PRIIPs (UE) 1286/2014 — Règlement SFDR (UE) 2019/2088 — Articles L.214-144, L.214-154, L.533-13 du Code monétaire et financier.</p>
+      </div>
+    </div>
+
+    <!-- 5. PIED DE PAGE -->
+    <div style="margin-top:14px;padding-top:8px;border-top:1px solid #e2e8f0;
+                font-size:7.5px;color:#94a3b8;text-align:center;line-height:1.5;">
+      Document généré par <b style="color:#64748b;">The Moon Investments</b> —
+      Outil d'aide à la sélection de fonds. Ne constitue pas une recommandation d'investissement
+      au sens de la Directive 2014/65/EU (MiFID II).
+    </div>`;
+
+  // Injecte le div dans le DOM (nécessaire pour html2canvas)
+  document.body.appendChild(pdfDiv);
+
+  // ── Bouton feedback ──────────────────────────────────────────
+  const btn = document.querySelector('.btn-pdf');
+  if (btn) { btn.textContent = '⏳ Génération…'; btn.disabled = true; }
+
+  // ── Lancement html2pdf sur l'élément DOM ─────────────────────
+  html2pdf()
+    .set({
+      margin:      [10, 10, 10, 10],
+      filename:    filename,
+      image:       { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, logging: false, windowWidth: 900 },
+      jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak:   { mode: 'avoid-all' }
+    })
+    .from(pdfDiv)
+    .save()
+    .then(() => {
+      document.body.removeChild(pdfDiv);
+      if (btn) { btn.innerHTML = '⬇ Exporter en PDF'; btn.disabled = false; }
+    })
+    .catch(err => {
+      console.error('PDF error:', err);
+      if (document.body.contains(pdfDiv)) document.body.removeChild(pdfDiv);
+      if (btn) { btn.innerHTML = '⬇ Exporter en PDF'; btn.disabled = false; }
+      alert('Erreur lors de la génération. Vérifiez votre connexion internet (CDN requis).');
+    });
+}
+
+/* ────────────────────────────────────────────────────────────────
+   SIMULATEUR DE CASH FLOW
+──────────────────────────────────────────────────────────────── */
+let cashflowChart = null;
+
+// Plugin Chart.js : ligne verticale pointillée
+const verticalLinePlugin = {
+  id: 'verticalLine',
+  afterDraw(chart) {
+    const meta = chart.config.options.plugins.verticalLine;
+    if (!meta || meta.year == null) return;
+    const { ctx, chartArea, scales } = chart;
+    const x = scales.x.getPixelForValue(meta.year);
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x, chartArea.top);
+    ctx.lineTo(x, chartArea.bottom);
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = '#c9a84c';
+    ctx.setLineDash([5, 4]);
+    ctx.stroke();
+    // Étiquette
+    ctx.fillStyle = '#c9a84c';
+    ctx.font = '600 10px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${meta.year} ans`, x, chartArea.top - 6);
+    ctx.restore();
+  }
+};
+Chart.register(verticalLinePlugin);
+
+// Remplit le <select> des fonds
+(function initSimFundSelect() {
+  const sel = document.getElementById('simFund');
+  FUNDS.forEach((f, i) => {
+    const opt = document.createElement('option');
+    opt.value  = i;
+    opt.textContent = f.fund_name;
+    sel.appendChild(opt);
+  });
+}());
+
+function curve(amount, ratePercent, years) {
+  const pts = [];
+  for (let t = 0; t <= years; t++) {
+    pts.push(parseFloat((amount * Math.pow(1 + ratePercent / 100, t)).toFixed(2)));
+  }
+  return pts;
+}
+
+function updateChart() {
+  const idx    = parseInt(document.getElementById('simFund').value, 10);
+  const amount = parseFloat(document.getElementById('simAmount').value) || 100000;
+  const fund   = FUNDS[idx];
+  const sc     = fund.scenarios_priips;
+  const years  = fund.recommended_horizon_years;
+  const labels = Array.from({ length: years + 1 }, (_, i) => i);
+
+  // Courbes
+  const dsStress  = curve(amount, sc.stress,       years);
+  const dsUnfav   = curve(amount, sc.unfavourable, years);
+  const dsMod     = curve(amount, sc.moderate,     years);
+  const dsFav     = curve(amount, sc.favourable,   years);
+
+  const fmtY = n => new Intl.NumberFormat('fr-FR', {
+    style: 'currency', currency: 'EUR', maximumFractionDigits: 0
+  }).format(n);
+
+  const commonDs = {
+    pointRadius: 3,
+    pointHoverRadius: 6,
+    borderWidth: 2,
+    tension: 0.35,
+    fill: false
+  };
+
+  const datasets = [
+    { label: 'Tension',        data: dsStress, borderColor: '#ef4444', pointBackgroundColor: '#ef4444', ...commonDs },
+    { label: 'Défavorable',    data: dsUnfav,  borderColor: '#f97316', pointBackgroundColor: '#f97316', ...commonDs },
+    { label: 'Intermédiaire',  data: dsMod,    borderColor: '#86efac', pointBackgroundColor: '#86efac', ...commonDs },
+    { label: 'Favorable',      data: dsFav,    borderColor: '#16a34a', pointBackgroundColor: '#16a34a', ...commonDs }
+  ];
+
+  if (cashflowChart) {
+    cashflowChart.data.labels   = labels;
+    cashflowChart.data.datasets = datasets;
+    cashflowChart.options.plugins.verticalLine.year = years;
+    cashflowChart.update();
+  } else {
+    const ctx = document.getElementById('cashflowChart').getContext('2d');
+    cashflowChart = new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          verticalLine: { year: years },
+          tooltip: {
+            backgroundColor: '#0b1628',
+            titleColor: '#c9a84c',
+            bodyColor: '#e2e8f0',
+            borderColor: '#c9a84c',
+            borderWidth: 1,
+            padding: 10,
+            callbacks: {
+              title: items => `Année ${items[0].label}`,
+              label: item => ` ${item.dataset.label} : ${fmtY(item.parsed.y)}`
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Années',
+              color: '#475569',
+              font: { size: 11, weight: '600' }
+            },
+            grid:  { color: '#f1f5f9' },
+            ticks: { color: '#94a3b8', font: { size: 10 } }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Valeur du portefeuille (€)',
+              color: '#475569',
+              font: { size: 11, weight: '600' }
+            },
+            grid:  { color: '#f1f5f9' },
+            ticks: {
+              color: '#94a3b8',
+              font: { size: 10 },
+              callback: v => new Intl.NumberFormat('fr-FR', {
+                style: 'currency', currency: 'EUR',
+                notation: 'compact', maximumFractionDigits: 0
+              }).format(v)
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // Info bar : valeurs à l'échéance
+  const info = document.getElementById('simInfo');
+  info.innerHTML = `
+    <strong>Valeurs à ${years} ans</strong> pour un investissement de <strong>${fmtY(amount)}</strong> —
+    <span style="color:#ef4444;font-weight:600;">Tension ${fmtY(dsStress[years])}</span> ·
+    <span style="color:#f97316;font-weight:600;">Défavorable ${fmtY(dsUnfav[years])}</span> ·
+    <span style="color:#65a375;font-weight:600;">Intermédiaire ${fmtY(dsMod[years])}</span> ·
+    <span style="color:#16a34a;font-weight:600;">Favorable ${fmtY(dsFav[years])}</span>
+  `;
+  info.classList.add('visible');
+}
+
+// Init au chargement
+window.addEventListener('DOMContentLoaded', () => updateChart());
+
+/* ─── Allow Enter key on form ───────────────────────────────── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') analyze();
+});
+
+/* ─── Tooltips ───────────────────────────────────────────────── */
+(function () {
+  const box = document.getElementById('ttbox');
+  let hideTimer;
+
+  document.addEventListener('mouseover', e => {
+    const btn = e.target.closest('.tip-btn');
+    if (!btn) return;
+    clearTimeout(hideTimer);
+    box.textContent = btn.dataset.tip || '';
+    box.classList.add('visible');
+    positionBox(e);
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (e.target.closest('.tip-btn')) positionBox(e);
+  });
+
+  document.addEventListener('mouseout', e => {
+    if (!e.target.closest('.tip-btn')) return;
+    hideTimer = setTimeout(() => box.classList.remove('visible'), 80);
+  });
+
+  function positionBox(e) {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const bw = box.offsetWidth || 320;
+    const bh = box.offsetHeight || 60;
+    let x = e.clientX + 14;
+    let y = e.clientY + 16;
+    if (x + bw > vw - 8) x = e.clientX - bw - 14;
+    if (y + bh > vh - 8) y = e.clientY - bh - 10;
+    box.style.left = x + 'px';
+    box.style.top  = y + 'px';
+  }
+})();
+</script>
+</body>
+</html>

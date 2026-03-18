@@ -1,0 +1,140 @@
+[
+  {
+    "fund_name": "Opale Capital Keensight Nova VII",
+    "sri": 6,
+    "recommended_horizon_years": 10,
+    "target_market_positive": "Investisseurs non professionnels au sens de la Directive 2014/65/EU répondant à l'une des conditions suivantes : (1) investisseur professionnel par nature ou sur option (L.214-144 CMF) ; (2) souscription initiale >= 100 000 EUR ; (3) souscription réalisée par un PSI dans le cadre d'un service de gestion de portefeuille (L.533-13 CMF).",
+    "target_market_negative": null,
+    "minimum_ticket_eur": 100000,
+    "investor_status_required": "Investisseur Averti (FPCI, L.214-160 CMF)",
+    "lock_up_years": "10 ans (prorogeable 2×1 an)",
+    "fund_type": "FPCI – Fonds Professionnel de Capital Investissement (capital-investissement PME tech & santé, Europe de l'Ouest, majoritaire)",
+    "sfdr_article": null,
+    "source_document": "G:/Mon Drive/fund-selector/OPALE Capital/Opal Capital Keensight Nova VII/Opale Capital Keensight Nova VII - Documents Réglementaires/DIC (part F).pdf ; DIC (part R).pdf",
+    "extraction_date": "2026-03-17",
+    "scenarios_priips": {
+      "part_reference": "Part F",
+      "horizon_years": 10,
+      "investment_base_eur": 10000,
+      "stress":        { "amount_eur": 8307,  "annual_return_pct": -1.8 },
+      "unfavourable":  { "amount_eur": 8854,  "annual_return_pct": -1.2 },
+      "moderate":      { "amount_eur": 15217, "annual_return_pct":  4.3 },
+      "favourable":    { "amount_eur": 24458, "annual_return_pct":  9.4 }
+    }
+  },
+  {
+    "fund_name": "Opale Capital Strategies Co-Investment",
+    "sri": 6,
+    "recommended_horizon_years": 10,
+    "target_market_positive": "Investisseurs non professionnels au sens de la Directive 2014/65/EU répondant à l'une des conditions suivantes : (1) souscription initiale >= 100 000 EUR ; (2) souscription initiale >= 30 000 EUR avec connaissance du capital-investissement ou assistance aux sociétés non cotées ; (3) souscription réalisée par un PSI dans le cadre d'un service de gestion de portefeuille (L.533-13 CMF). Parts F1/R1 : souscription >= 500 000 EUR depuis le 17/12/2024.",
+    "target_market_negative": null,
+    "minimum_ticket_eur": 100000,
+    "investor_status_required": "Investisseur Averti (FPS, L.214-154 CMF) — parts F1/R1 : 500 000 EUR min. depuis 17/12/2024 ; parts F2/R2 : 100 000 EUR min.",
+    "lock_up_years": "10 ans (prorogeable 3×1 an)",
+    "fund_type": "FPS – Fonds d'Investissement Professionnel Spécialisé (fonds de co-investissement PE, Europe et Amérique du Nord, fonds propres / quasi-fonds propres / dette)",
+    "sfdr_article": null,
+    "source_document": "G:/Mon Drive/fund-selector/OPALE Capital/Opal Capital Strategies Co-Investment/Opale Capital Strategies Co-Investment - Documents Réglementaires/DIC (part F).pdf ; DIC (part R).pdf",
+    "extraction_date": "2026-03-17",
+    "scenarios_priips": {
+      "part_reference": "Part F1",
+      "horizon_years": 10,
+      "investment_base_eur": 10000,
+      "stress":        { "amount_eur": 7823,  "annual_return_pct": -2.4 },
+      "unfavourable":  { "amount_eur": 8348,  "annual_return_pct": -1.8 },
+      "moderate":      { "amount_eur": 14451, "annual_return_pct":  3.8 },
+      "favourable":    { "amount_eur": 23316, "annual_return_pct":  8.8 }
+    }
+  },
+  {
+    "fund_name": "Opale Capital Strategies Direct Lending I",
+    "sri": 6,
+    "recommended_horizon_years": 6,
+    "target_market_positive": "Investisseurs non professionnels au sens de la Directive 2014/65/EU répondant à l'une des conditions suivantes : (1) souscription initiale >= 100 000 EUR ; (2) souscription initiale >= 30 000 EUR avec connaissance du capital-investissement ou assistance aux sociétés non cotées ; (3) souscription réalisée par un PSI dans le cadre d'un service de gestion de portefeuille (L.533-13 CMF).",
+    "target_market_negative": null,
+    "minimum_ticket_eur": 100000,
+    "investor_status_required": "Investisseur Averti (FPS, L.214-154 CMF) — ou 30 000 EUR avec conditions de connaissance PE",
+    "lock_up_years": "6 ans (prorogeable 3×1 an)",
+    "fund_type": "FPS – Fonds d'Investissement Professionnel Spécialisé (dette privée / direct lending, principalement Europe et Amérique du Nord)",
+    "sfdr_article": null,
+    "source_document": "G:/Mon Drive/fund-selector/OPALE Capital/Opal Capital Strategies Direct Lending I/Opale Capital Strategies Direct Lending I - Documents Réglementaires/DIC (part F).pdf ; DIC (part R).pdf",
+    "extraction_date": "2026-03-17",
+    "scenarios_priips": {
+      "part_reference": "Part F1",
+      "horizon_years": 6,
+      "investment_base_eur": 10000,
+      "stress":        { "amount_eur": 9883,  "annual_return_pct": -0.2 },
+      "unfavourable":  { "amount_eur": 9983,  "annual_return_pct":  0.0 },
+      "moderate":      { "amount_eur": 11783, "annual_return_pct":  2.8 },
+      "favourable":    { "amount_eur": 15183, "annual_return_pct":  7.2 }
+    }
+  },
+  {
+    "fund_name": "Opale Capital Strategies Secondaries II",
+    "sri": 6,
+    "recommended_horizon_years": 10,
+    "target_market_positive": "Investisseurs non professionnels au sens de la Directive 2014/65/EU répondant à l'une des conditions suivantes : (1) souscription initiale >= 100 000 EUR ; (2) souscription initiale >= 30 000 EUR avec connaissance du capital-investissement ou assistance aux sociétés non cotées ; (3) souscription réalisée par un PSI dans le cadre d'un service de gestion de portefeuille (L.533-13 CMF).",
+    "target_market_negative": null,
+    "minimum_ticket_eur": 100000,
+    "investor_status_required": "Investisseur Averti (FPS, L.214-154 CMF) — ou 30 000 EUR avec conditions de connaissance PE",
+    "lock_up_years": "10 ans (prorogeable 4×1 an)",
+    "fund_type": "FPS – Fonds d'Investissement Professionnel Spécialisé (fonds de secondaire Private Equity, mondial avec focus Europe et Amérique du Nord)",
+    "sfdr_article": null,
+    "source_document": "G:/Mon Drive/fund-selector/OPALE Capital/Opal Capital Strategies Secondaries II/Opale Capital Strategies Secondaries II - Documents Réglementaires (1)/DIC (part F).pdf ; DIC (part R).pdf",
+    "extraction_date": "2026-03-17",
+    "scenarios_priips": {
+      "part_reference": "Part F1",
+      "horizon_years": 10,
+      "investment_base_eur": 10000,
+      "stress":        { "amount_eur": 9420,  "annual_return_pct": -0.6 },
+      "unfavourable":  { "amount_eur": 12025, "annual_return_pct":  1.9 },
+      "moderate":      { "amount_eur": 15478, "annual_return_pct":  4.5 },
+      "favourable":    { "amount_eur": 19997, "annual_return_pct":  7.2 }
+    }
+  },
+  {
+    "fund_name": "Opale Capital Strategies Tactical Credit II",
+    "sri": 6,
+    "recommended_horizon_years": 8,
+    "target_market_positive": "Investisseurs non professionnels au sens de la Directive 2014/65/EU répondant à l'une des conditions suivantes : (1) souscription initiale >= 100 000 EUR ; (2) souscription initiale >= 30 000 EUR avec connaissance du capital-investissement ou assistance aux sociétés non cotées ; (3) souscription réalisée par un PSI dans le cadre d'un service de gestion de portefeuille (L.533-13 CMF).",
+    "target_market_negative": null,
+    "minimum_ticket_eur": 100000,
+    "investor_status_required": "Investisseur Averti (FPS, L.214-154 CMF) — ou 30 000 EUR avec conditions de connaissance PE",
+    "lock_up_years": "8 ans (prorogeable 4×1 an)",
+    "fund_type": "FPS – Fonds d'Investissement Professionnel Spécialisé (situations spéciales / tactical credit, fonds propres, quasi-fonds propres et dette, Europe et Amérique du Nord)",
+    "sfdr_article": null,
+    "source_document": "G:/Mon Drive/fund-selector/OPALE Capital/Opal Capital Strategies Tactical Credit II/Opale Capital Strategies Tactical Credit II - Documents Réglementaires/DIC (part F).pdf ; DIC (part R).pdf",
+    "extraction_date": "2026-03-17",
+    "scenarios_priips": {
+      "part_reference": "Part F1",
+      "horizon_years": 8,
+      "investment_base_eur": 10000,
+      "stress":        { "amount_eur": 9146,  "annual_return_pct": -1.1 },
+      "unfavourable":  { "amount_eur": 9632,  "annual_return_pct": -0.5 },
+      "moderate":      { "amount_eur": 13045, "annual_return_pct":  3.4 },
+      "favourable":    { "amount_eur": 19325, "annual_return_pct":  8.6 }
+    }
+  },
+  {
+    "fund_name": "Tikehau Aéro Partenaires II Feeder",
+    "sri": 6,
+    "recommended_horizon_years": 10,
+    "target_market_positive": "Investisseurs non professionnels au sens de la Directive 2014/65/EU répondant à l'une des conditions suivantes : (1) souscription initiale >= 100 000 EUR ; (2) souscription initiale >= 30 000 EUR avec connaissance du capital-investissement ou assistance aux sociétés non cotées ; (3) souscription réalisée par un PSI dans le cadre d'un service de gestion de portefeuille (L.533-13 CMF).",
+    "target_market_negative": null,
+    "minimum_ticket_eur": 100000,
+    "investor_status_required": "Investisseur Averti (FPS, L.214-154 CMF) — ou 30 000 EUR avec conditions de connaissance PE",
+    "lock_up_years": "10 ans (prorogeable 2×1 an)",
+    "fund_type": "FPS – Fonds d'Investissement Professionnel Spécialisé, fonds nourricier (investit >= 85% dans Ace Aero Partenaires 2 — PE majoritaire, PME chaîne d'approvisionnement aérospatiale & défense, 70% France / 30% international)",
+    "sfdr_article": null,
+    "source_document": "G:/Mon Drive/fund-selector/OPALE Capital/Tikehau Aéro Partenaires II Feeder/Tikehau Aéro Partenaires II Feeder - Documents Réglementaires/DIC (part F).pdf ; DIC (part R).pdf",
+    "extraction_date": "2026-03-17",
+    "scenarios_priips": {
+      "part_reference": "Part F",
+      "horizon_years": 10,
+      "investment_base_eur": 10000,
+      "stress":        { "amount_eur": 8127,  "annual_return_pct": -2.1 },
+      "unfavourable":  { "amount_eur": 8652,  "annual_return_pct": -1.4 },
+      "moderate":      { "amount_eur": 14755, "annual_return_pct":  4.0 },
+      "favourable":    { "amount_eur": 23619, "annual_return_pct":  9.0 }
+    }
+  }
+]
