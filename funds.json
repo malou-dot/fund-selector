@@ -136,20 +136,5 @@
       "moderate":      { "amount_eur": 14755, "annual_return_pct":  4.0 },
       "favourable":    { "amount_eur": 23619, "annual_return_pct":  9.0 }
     }
-  },
-  {
-    "fund_name": "Openstone Prime",
-    "sri": 4,
-    "recommended_horizon_years": 10,
-    "target_market_positive": "Investisseurs non professionnels répondant à l'une des conditions suivantes : (1) souscription initiale >= 100 000 EUR ; (2) souscription initiale >= 30 000 EUR sous conditions art. 423-49 RG AMF ; (3) souscription réalisée par un PSI dans le cadre d'un service de gestion de portefeuille (art. L.533-13 CMF). Régi par les articles L.214-154 et suivants du CMF.",
-    "target_market_negative": null,
-    "minimum_ticket_eur": 100000,
-    "investor_status_required": "Investisseur Averti (FIPS, art. L.214-154 CMF) — ou 30 000 EUR sous conditions art. 423-49 RG AMF",
-    "lock_up_years": "Evergreen — durée 99 ans, rachats annuels à partir de l'année 3",
-    "fund_type": "FIPS – Fonds d'Investissement Professionnel Spécialisé (fonds de fonds private equity immobilier européen, evergreen — BlackRock, EQT, Ares, Carlyle)",
-    "sfdr_article": null,
-    "source_document": "G:/Mon Drive/Produit - Opênstone - Openstone Prime/2. Prospectus & DIC/",
-    "extraction_date": "2026-03-18",
-    "scenarios_priips": null
   }
 ]
