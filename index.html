@@ -933,6 +933,20 @@ const FUNDS = [
     fpci: false,
     sfdr_article: null,
     scenarios_priips: { stress: -2.1, unfavourable: -1.4, moderate: 4.0, favourable: 9.0 }
+  },
+  {
+    fund_name: "Openstone Prime",
+    sri: 4,
+    recommended_horizon_years: 10,
+    minimum_ticket_eur: 100000,
+    lock_up_years: "Evergreen — rachats annuels à partir de l'année 3",
+    fund_type: "FIPS",
+    fund_type_full: "FIPS — Fonds de fonds PE immobilier européen (evergreen · BlackRock, EQT, Ares, Carlyle)",
+    investor_status_required: "Investisseur Averti (FIPS, art. L.214-154 CMF)",
+    fpci: false,
+    evergreen: true,
+    sfdr_article: null,
+    scenarios_priips: null
   }
 ];
 
@@ -1014,19 +1028,25 @@ function matchFund(fund, profile) {
     });
   }
 
-  /* ── 4. Capacité de perte vs SRI ────────────────────────── */
-  if (profile.perte === 'Totale') {
-    checks.push({ type: 'ok', text: `Capacité de perte totale compatible avec SRI ${fund.sri}/7 (risque élevé, perte totale possible)` });
-  } else if (profile.perte === 'Moyenne') {
-    checks.push({
-      type: 'warn',
-      text: `SRI ${fund.sri}/7 implique un risque de perte totale en capital — capacité de perte moyenne (50%) potentiellement insuffisante`
-    });
+  /* ── 4. Capacité de perte vs SRI (dynamique) ───────────────── */
+  if (fund.sri >= 6) {
+    // Risque élevé — perte totale du capital possible
+    if (profile.perte === 'Totale') {
+      checks.push({ type: 'ok',    text: `Capacité de perte totale compatible avec SRI ${fund.sri}/7 — risque élevé, perte totale possible` });
+    } else if (profile.perte === 'Moyenne') {
+      checks.push({ type: 'warn',  text: `SRI ${fund.sri}/7 implique un risque de perte totale en capital — capacité de perte moyenne (50%) potentiellement insuffisante` });
+    } else {
+      checks.push({ type: 'block', text: `Capacité de perte faible (25%) incompatible avec SRI ${fund.sri}/7 — produit à risque élevé sans protection du capital` });
+    }
+  } else if (fund.sri >= 4) {
+    // Risque modéré — perte partielle possible, Totale et Moyenne acceptables
+    if (profile.perte === 'Totale' || profile.perte === 'Moyenne') {
+      checks.push({ type: 'ok',   text: `Capacité de perte ${profile.perte.toLowerCase()} compatible avec SRI ${fund.sri}/7 (risque modéré)` });
+    } else {
+      checks.push({ type: 'warn', text: `SRI ${fund.sri}/7 (risque modéré) — capacité de perte faible (25%) à surveiller selon les conditions de marché` });
+    }
   } else {
-    checks.push({
-      type: 'block',
-      text: `Capacité de perte faible (25%) incompatible avec SRI ${fund.sri}/7 — produit à risque élevé sans protection du capital`
-    });
+    checks.push({ type: 'ok', text: `SRI ${fund.sri}/7 (risque faible) — compatible avec toutes les capacités de perte` });
   }
 
   /* ── 5. Expérience en non coté ──────────────────────────── */
@@ -1467,6 +1487,29 @@ function updateChart() {
   const amount = parseFloat(document.getElementById('simAmount').value) || 100000;
   const fund   = FUNDS[idx];
   const sc     = fund.scenarios_priips;
+  const info   = document.getElementById('simInfo');
+
+  // Pas de scénarios PRIIPs disponibles pour ce fonds
+  if (!sc) {
+    if (cashflowChart) { cashflowChart.destroy(); cashflowChart = null; }
+    const canvas = document.getElementById('cashflowChart');
+    const ctx2   = canvas.getContext('2d');
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2.save();
+    ctx2.fillStyle = '#94a3b8';
+    ctx2.font = '14px Inter, sans-serif';
+    ctx2.textAlign = 'center';
+    ctx2.textBaseline = 'middle';
+    ctx2.fillText('Scénarios PRIIPs non disponibles — DIC en cours d\'intégration.', canvas.width / 2, canvas.height / 2);
+    ctx2.restore();
+    if (info) {
+      info.textContent = `ⓘ Les scénarios PRIIPs de ${fund.fund_name} ne sont pas encore disponibles dans le simulateur.`;
+      info.classList.add('visible');
+    }
+    return;
+  }
+  if (info) info.classList.remove('visible');
+
   const years  = fund.recommended_horizon_years;
   const labels = Array.from({ length: years + 1 }, (_, i) => i);
 
